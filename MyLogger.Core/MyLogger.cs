@@ -26,7 +26,10 @@ namespace MyLogger.Core
                 return;
             }
 
-            Console.Write($"{formatter(state, exception)}");
+            Console.WriteLine(Format(state, logLevel, exception));
         }
+
+        private static string Format<TState>(TState state, LogLevel logLevel, Exception exception) =>
+            $"#{DateTime.UtcNow:O}[{logLevel}]#{state}";
     }
 }

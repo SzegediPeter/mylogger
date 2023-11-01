@@ -15,9 +15,16 @@ namespace MyLogger.ConsoleApp
             var logger = serviceProvider.GetService<ILoggerFactory>()
                 .CreateLogger<Program>();
 
-            logger.LogDebug("Starting application");
+            logger.LogTrace("This is a Trace message");
+            logger.LogDebug("This is a Debug message");
+            logger.LogInformation("This is an Info message!");
+            logger.LogWarning("This is a Warning message!");
+            logger.LogError("This is an Error message!");
+            logger.LogCritical("This is a Critical message!");
+            logger.LogError(new Exception("This is my exception message"), "This is an error message");
 
-            logger.LogDebug("All done!");
+            Console.ReadKey();
+
         }
     }
 }
