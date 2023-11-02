@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MyLogger.ConsoleTarget;
 using MyLogger.Core;
 
 namespace MyLogger.ConsoleApp
@@ -9,7 +10,7 @@ namespace MyLogger.ConsoleApp
         static void Main(string[] args)
         {
             var serviceProvider = new ServiceCollection()
-                .AddLogging(builder => builder.UseMyLogger())
+                .AddLogging(builder => builder.AddMyLogger().UseConsole())
               .BuildServiceProvider();
 
             var logger = serviceProvider.GetService<ILoggerFactory>()

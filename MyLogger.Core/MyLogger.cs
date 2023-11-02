@@ -4,6 +4,13 @@ namespace MyLogger.Core
 {
     public class MyLogger : ILogger
     {
+        private readonly IEnumerable<ILogTarget> _logTargets;
+
+        public MyLogger(IEnumerable<ILogTarget> logTargets)
+        {
+            _logTargets = logTargets;
+        }
+
         public IDisposable BeginScope<TState>(TState state)
         {
             return default!; // TODO
@@ -26,7 +33,24 @@ namespace MyLogger.Core
                 return;
             }
 
-            Console.WriteLine(Format(state, logLevel, exception));
+            var message = Format(state, logLevel, exception);
+
+            if (_logTargets.Any())
+            {
+                foreach (var logTarget in _logTargets)
+                {
+                    logTarget.Log(logLevel, message);
+                }
+            }
+            else
+            {
+                // fallback if no target registered
+                lock (Console.Out)
+                {
+                    Console.WriteLine(message);
+                }
+            }
+
         }
 
         private static string Format<TState>(TState state, LogLevel logLevel, Exception exception) =>

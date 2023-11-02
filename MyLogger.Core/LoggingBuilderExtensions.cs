@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace MyLogger.Core
 {
-    public static class MyLoggerExtensions
+    public static class LoggingBuilderExtensions
     {
-        public static ILoggingBuilder UseMyLogger(this ILoggingBuilder builder)
+        public static ILoggingBuilder AddMyLogger(this ILoggingBuilder builder)
         {
             builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
 
