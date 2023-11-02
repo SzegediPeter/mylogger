@@ -26,7 +26,7 @@ namespace MyLogger.ConsoleApp
                 logger.LogTrace("This is a Trace message {counter}", i);
                 logger.LogDebug("This is a Debug message {counter}", i);
                 logger.LogInformation("This is an Info message {counter}", i);
-                logger.LogWarning("This is a Warning message {stcounterate}", i);
+                logger.LogWarning("This is a Warning message {counter}", i);
                 logger.LogError("This is an Error message {counter}", i);
                 logger.LogCritical("This is a Critical message {counter}", i);
                 logger.LogError(new Exception("This is my exception message"), "This is an error message {counter}", i);
