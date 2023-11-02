@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MyLogger.ConsoleTarget\MyLogger.ConsoleTarget.csproj" />
     <ProjectReference Include="..\MyLogger.Core\MyLogger.Core.csproj" />
+    <ProjectReference Include="..\MyLogger.FileTarget\MyLogger.FileTarget.csproj" />
   </ItemGroup>
 
 </Project>
