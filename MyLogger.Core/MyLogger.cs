@@ -37,10 +37,10 @@ namespace MyLogger.Core
 
             if (_logTargets.Any())
             {
-                foreach (var logTarget in _logTargets)
+                Parallel.ForEach(_logTargets, target =>
                 {
-                    logTarget.Log(logLevel, message);
-                }
+                    target.Log(logLevel, message);
+                });
             }
             else
             {

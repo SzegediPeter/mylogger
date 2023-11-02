@@ -15,6 +15,7 @@
     <ProjectReference Include="..\MyLogger.ConsoleTarget\MyLogger.ConsoleTarget.csproj" />
     <ProjectReference Include="..\MyLogger.Core\MyLogger.Core.csproj" />
     <ProjectReference Include="..\MyLogger.FileTarget\MyLogger.FileTarget.csproj" />
+    <ProjectReference Include="..\MyLogger.StreamTarget\MyLogger.StreamTarget.csproj" />
   </ItemGroup>
 
 </Project>

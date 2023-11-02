@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using MyLogger.ConsoleTarget;
 using MyLogger.Core;
 using MyLogger.FileTarget;
+using MyLogger.StreamTarget;
 
 namespace MyLogger.ConsoleApp
 {
@@ -10,18 +11,25 @@ namespace MyLogger.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var serviceProvider = new ServiceCollection()
-                .AddLogging(b => 
+            var tempFile  = Path.GetTempFileName();
+            Console.WriteLine(tempFile);
+
+            using FileStream fs =  new FileStream(tempFile, FileMode.OpenOrCreate, FileAccess.Write);
+            SampleFileStreamProvider sampleFileStreamProvider = new(fs);
+            
+                var serviceProvider = new ServiceCollection()
+                .AddLogging(b =>
                     b.AddMyLogger()
                     .UseConsole()
                     .UseFile()
-                    .SetMinimumLevel(LogLevel.Debug))
+                    .UseStream(sampleFileStreamProvider)
+                    .SetMinimumLevel(LogLevel.Trace))
               .BuildServiceProvider();
 
             var logger = serviceProvider.GetService<ILoggerFactory>()
                 .CreateLogger<Program>();
 
-            Parallel.For(0, 10, (i, state) =>
+            Parallel.For(0, 10, (i, _) =>
             {
                 logger.LogTrace("This is a Trace message {counter}", i);
                 logger.LogDebug("This is a Debug message {counter}", i);
@@ -32,10 +40,7 @@ namespace MyLogger.ConsoleApp
                 logger.LogError(new Exception("This is my exception message"), "This is an error message {counter}", i);
             });
 
-
-
             Console.ReadKey();
-
         }
     }
 }
