@@ -1,14 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
+using NodaTime;
 
 namespace MyLogger.Core
 {
     public class MyLogger : ILogger
     {
         private readonly IEnumerable<ILogTarget> _logTargets;
+        private readonly IClock _clock;
 
-        public MyLogger(IEnumerable<ILogTarget> logTargets)
+        public MyLogger(IEnumerable<ILogTarget> logTargets, IClock clock)
         {
             _logTargets = logTargets;
+            _clock = clock;
         }
 
         public IDisposable BeginScope<TState>(TState state)
@@ -53,7 +56,7 @@ namespace MyLogger.Core
 
         }
 
-        private static string Format<TState>(TState state, LogLevel logLevel, Exception exception) =>
-            $"#{DateTime.UtcNow:O}[{logLevel}]#{state}";
+        private string Format<TState>(TState state, LogLevel logLevel, Exception exception) =>
+            $"#{_clock.GetCurrentInstant().ToDateTimeUtc():O}[{logLevel}]#{state}";
     }
 }
