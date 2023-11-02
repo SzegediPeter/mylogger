@@ -7,7 +7,7 @@ namespace MyLogger.ConsoleTarget
     {
         private const int MaxLength = 1000;
 
-        public void Log(LogLevel logLevel, string message)
+        public Task Log(LogLevel logLevel, string message)
         {
             if (message.Length > MaxLength)
             {
@@ -29,6 +29,8 @@ namespace MyLogger.ConsoleTarget
                 Console.WriteLine(message);
                 Console.ResetColor();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

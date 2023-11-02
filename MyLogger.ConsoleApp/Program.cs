@@ -40,6 +40,7 @@ namespace MyLogger.ConsoleApp
                 logger.LogError(new Exception("This is my exception message"), "This is an error message {counter}", i);
             });
 
+            Console.WriteLine("Program DONE");
             Console.ReadKey();
         }
     }

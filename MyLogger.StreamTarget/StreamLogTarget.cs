@@ -12,11 +12,11 @@ namespace MyLogger.StreamTarget
             _synchronizedStream = Stream.Synchronized(streamProvider.GetStream());
         }
 
-        public void Log(LogLevel logLevel, string message)
+        public async Task Log(LogLevel logLevel, string message)
         {
             StreamWriter sw = new(_synchronizedStream);
             sw.AutoFlush = true;
-            sw.WriteLine(message);
+            await sw.WriteLineAsync(message);
         }
     }
 }

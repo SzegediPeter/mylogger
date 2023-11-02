@@ -19,13 +19,15 @@ namespace MyLogger.FileTarget
             _fileSystem = fileSystem;
         }
 
-        public void Log(LogLevel logLevel, string message)
+        public Task Log(LogLevel logLevel, string message)
         {
             lock (_lock) // TODO
             {
                 CheckFileSize();
                 _fileSystem.File.AppendAllText(CurrentLogFilePath, $"{message}\n"); // TODO: async
             }
+
+            return Task.CompletedTask;
         }
 
         private string CurrentLogFilePath => Path.Combine(BasePath, LogFileName);

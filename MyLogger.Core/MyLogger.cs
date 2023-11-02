@@ -53,7 +53,6 @@ namespace MyLogger.Core
                     Console.WriteLine(message);
                 }
             }
-
         }
 
         private string Format<TState>(TState state, LogLevel logLevel, Exception exception) =>
