@@ -7,11 +7,12 @@ namespace MyLogger.FileTarget
 {
     public class FileLogTarget : ILogTarget
     {
-        private readonly IFileSystem _fileSystem;
+        private const string Pattern = @"\.(?<integer>\d+)\.";
         private const int MaxFileSize = 5 * 1024;
         private const string LogFileName = "log.txt";
-        private readonly string BasePath = AppContext.BaseDirectory;
-        private const string Pattern = @"\.(?<integer>\d+)\.";
+
+        private readonly IFileSystem _fileSystem;
+        private readonly string _basePath = AppContext.BaseDirectory;
         private readonly object _lock = new();
 
         public FileLogTarget(IFileSystem fileSystem)
@@ -21,28 +22,28 @@ namespace MyLogger.FileTarget
 
         public Task Log(LogLevel logLevel, string message)
         {
-            lock (_lock) // TODO
+            lock (_lock)
             {
                 CheckFileSize();
-                _fileSystem.File.AppendAllText(CurrentLogFilePath, $"{message}\n"); // TODO: async
+                _fileSystem.File.AppendAllText(CurrentLogFilePath, $"{message}\n");
             }
 
             return Task.CompletedTask;
         }
 
-        private string CurrentLogFilePath => Path.Combine(BasePath, LogFileName);
+        private string CurrentLogFilePath => Path.Combine(_basePath, LogFileName);
 
         private void CheckFileSize()
         {
             var fi = _fileSystem.FileInfo.New(CurrentLogFilePath);
             
-            if (fi.Exists && fi?.Length > MaxFileSize)
+            if (fi.Exists && fi.Length > MaxFileSize)
             {
-                string[] logFileList = _fileSystem.Directory.GetFiles(BasePath, "log.*.txt", SearchOption.TopDirectoryOnly);
+                var logFileList = _fileSystem.Directory.GetFiles(_basePath, "log.*.txt", SearchOption.TopDirectoryOnly);
 
                 var latestIndex = logFileList.Any() ? logFileList.Select(ExtractInteger).Max() : 0;
                 var nextIndex = latestIndex + 1;
-                _fileSystem.File.Move(CurrentLogFilePath, Path.Combine(BasePath, $"log.{nextIndex}.txt"));
+                _fileSystem.File.Move(CurrentLogFilePath, Path.Combine(_basePath, $"log.{nextIndex}.txt"));
             }
         }
 

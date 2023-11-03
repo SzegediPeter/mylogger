@@ -26,8 +26,10 @@ namespace MyLogger.ConsoleApp
                     .SetMinimumLevel(LogLevel.Trace))
               .BuildServiceProvider();
 
-            var logger = serviceProvider.GetService<ILoggerFactory>()
+            var logger = serviceProvider.GetRequiredService<ILoggerFactory>()
                 .CreateLogger<Program>();
+
+            logger.LogDebug("Starting parallel loop {DateTime:o}", DateTime.Now);
 
             Parallel.For(0, 10, (i, _) =>
             {
@@ -39,6 +41,14 @@ namespace MyLogger.ConsoleApp
                 logger.LogCritical("This is a Critical message {counter}", i);
                 logger.LogError(new Exception("This is my exception message"), "This is an error message {counter}", i);
             });
+
+            logger.LogTrace("This is a Trace message {counter}", -1);
+            logger.LogDebug("This is a Debug message {counter}", -1);
+            logger.LogInformation("This is an Info message {counter}", -1);
+            logger.LogWarning("This is a Warning message {counter}", -1);
+            logger.LogError("This is an Error message {counter}", -1);
+            logger.LogCritical("This is a Critical message {counter}", -1);
+            logger.LogError(new Exception("This is my exception message"), "This is an error message {counter}", -1);
 
             Console.WriteLine("Program DONE");
             Console.ReadKey();

@@ -16,12 +16,12 @@ namespace MyLogger.Core
 
         public IDisposable BeginScope<TState>(TState state)
         {
-            return default!; // TODO
+            return default!;
         }
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            return true; // TODO
+            return true;
         }
 
         public void Log<TState>(
